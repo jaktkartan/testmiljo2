@@ -39,7 +39,7 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            animation: spin 2s linear infinite;
+            animation: spin 2.5s linear infinite;
         }
 
         .circle div:nth-child(1) {
@@ -47,23 +47,23 @@
         }
 
         .circle div:nth-child(2) {
-            animation-delay: 0.25s;
+            animation-delay: 0.625s;
         }
 
         .circle div:nth-child(3) {
-            animation-delay: 0.5s;
+            animation-delay: 1.25s;
         }
 
         .circle div:nth-child(4) {
-            animation-delay: 0.75s;
+            animation-delay: 1.875s;
         }
 
         @keyframes spin {
             0% {
-                transform: translateX(-50%) rotate(0deg) translateY(-50px);
+                transform: translateX(-50%) rotate(0deg) translateY(-40px);
             }
             100% {
-                transform: translateX(-50%) rotate(360deg) translateY(-50px);
+                transform: translateX(-50%) rotate(360deg) translateY(-40px);
             }
         }
 
