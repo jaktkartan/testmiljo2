@@ -25,36 +25,37 @@
 
         .circle {
             position: relative;
-            width: 150px;
-            height: 150px;
-            animation: spin 2s linear infinite;
+            width: 100px;
+            height: 100px;
         }
 
         .circle div {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             background-color: rgb(25, 47, 44);
             border-radius: 50%;
+            transform-origin: 50px 50px; /* Center point of the circle */
+            animation: spin 1s linear infinite;
         }
 
-        .circle div:nth-child(1) { top: 0px; left: 50%; transform: translateX(-50%); }
-        .circle div:nth-child(2) { top: 20px; left: 83%; }
-        .circle div:nth-child(3) { top: 50%; left: 100%; transform: translateY(-50%); }
-        .circle div:nth-child(4) { top: 83%; left: 83%; }
-        .circle div:nth-child(5) { top: 100%; left: 50%; transform: translateX(-50%) translateY(-50%); }
-        .circle div:nth-child(6) { top: 83%; left: 17%; }
-        .circle div:nth-child(7) { top: 50%; left: 0%; transform: translateY(-50%); }
-        .circle div:nth-child(8) { top: 20px; left: 17%; }
+        .circle div:nth-child(1) { transform: rotate(0deg) translate(50px); }
+        .circle div:nth-child(2) { transform: rotate(45deg) translate(50px); }
+        .circle div:nth-child(3) { transform: rotate(90deg) translate(50px); }
+        .circle div:nth-child(4) { transform: rotate(135deg) translate(50px); }
+        .circle div:nth-child(5) { transform: rotate(180deg) translate(50px); }
+        .circle div:nth-child(6) { transform: rotate(225deg) translate(50px); }
+        .circle div:nth-child(7) { transform: rotate(270deg) translate(50px); }
+        .circle div:nth-child(8) { transform: rotate(315deg) translate(50px); }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { transform: rotate(0deg) translate(50px); }
+            100% { transform: rotate(360deg) translate(50px); }
         }
 
         .logo {
             position: absolute;
-            width: 120px;
+            width: 80px;
             height: auto;
             z-index: 1;
         }
