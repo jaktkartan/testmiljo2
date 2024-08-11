@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Animation with Centered Logo</title>
+    <title>Loading Animation with Smooth Chasing Dots</title>
     <style>
         body, html {
             margin: 0;
@@ -35,7 +35,7 @@
             height: 16px;
             background-color: rgb(25, 47, 44);
             border-radius: 50%;
-            animation: spin 2.4s ease-in-out infinite;
+            animation: spin 2s linear infinite;
             top: 0;
             left: 50%;
             transform: translate(-50%, 0);
@@ -47,29 +47,20 @@
         }
 
         .circle div:nth-child(2) {
-            animation-delay: 0.6s;
+            animation-delay: 0.2s;
         }
 
         .circle div:nth-child(3) {
-            animation-delay: 1.2s;
+            animation-delay: 0.4s;
         }
 
         .circle div:nth-child(4) {
-            animation-delay: 1.8s;
+            animation-delay: 0.6s;
         }
 
         @keyframes spin {
             0% {
                 transform: translate(-50%, 0) rotate(0deg);
-            }
-            25% {
-                transform: translate(-50%, 0) rotate(90deg);
-            }
-            50% {
-                transform: translate(-50%, 0) rotate(180deg);
-            }
-            75% {
-                transform: translate(-50%, 0) rotate(270deg);
             }
             100% {
                 transform: translate(-50%, 0) rotate(360deg);
