@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Animation with Chasing Dots</title>
+    <title>Loading Animation with Gathered Dots</title>
     <style>
         body, html {
             margin: 0;
@@ -35,9 +35,9 @@
             height: 16px;
             background-color: rgb(25, 47, 44);
             border-radius: 50%;
-            top: 0;
+            top: 50%;
             left: 50%;
-            transform: translate(-50%, 0);
+            transform-origin: -40px 0;
             animation: spin 2s linear infinite;
         }
 
@@ -59,11 +59,39 @@
 
         @keyframes spin {
             0% {
-                transform: rotate(0deg) translate(40px) rotate(0deg);
+                transform: rotate(0deg);
+            }
+            90% {
+                transform: rotate(360deg);
             }
             100% {
-                transform: rotate(360deg) translate(40px) rotate(-360deg);
+                transform: rotate(360deg);
             }
+        }
+
+        @keyframes pause {
+            0%, 100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .circle div:nth-child(1) {
+            animation: spin 2s linear 1s infinite, pause 1s steps(1) infinite;
+        }
+
+        .circle div:nth-child(2) {
+            animation: spin 2s linear 1s infinite, pause 1s steps(1) infinite;
+            animation-delay: 0.5s;
+        }
+
+        .circle div:nth-child(3) {
+            animation: spin 2s linear 1s infinite, pause 1s steps(1) infinite;
+            animation-delay: 1s;
+        }
+
+        .circle div:nth-child(4) {
+            animation: spin 2s linear 1s infinite, pause 1s steps(1) infinite;
+            animation-delay: 1.5s;
         }
 
         .logo {
@@ -99,3 +127,4 @@
 
 </body>
 </html>
+
