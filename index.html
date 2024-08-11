@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Animation with Chasing Dots</title>
+    <title>Loading Animation with Four Chasing Dots</title>
     <style>
         body, html {
             margin: 0;
@@ -35,7 +35,8 @@
             height: 16px;
             background-color: rgb(25, 47, 44);
             border-radius: 50%;
-            animation: spin 1.5s linear infinite;
+            transform-origin: 50% 50%;
+            animation: spin 2.4s ease-in-out infinite;
         }
 
         .circle div:nth-child(1) {
@@ -43,16 +44,29 @@
         }
 
         .circle div:nth-child(2) {
-            animation-delay: 0.3s;
+            animation-delay: 0.6s;
         }
 
         .circle div:nth-child(3) {
-            animation-delay: 0.6s;
+            animation-delay: 1.2s;
+        }
+
+        .circle div:nth-child(4) {
+            animation-delay: 1.8s;
         }
 
         @keyframes spin {
             0% {
                 transform: rotate(0deg) translate(40px) rotate(0deg);
+            }
+            25% {
+                transform: rotate(90deg) translate(40px) rotate(-90deg);
+            }
+            50% {
+                transform: rotate(180deg) translate(40px) rotate(-180deg);
+            }
+            75% {
+                transform: rotate(270deg) translate(40px) rotate(-270deg);
             }
             100% {
                 transform: rotate(360deg) translate(40px) rotate(-360deg);
@@ -77,6 +91,7 @@
 
 <div class="loader">
     <div class="circle">
+        <div></div>
         <div></div>
         <div></div>
         <div></div>
