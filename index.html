@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Animation with Spinning Circle</title>
+    <title>Loading Animation with Spinning Dots</title>
     <style>
         body, html {
             margin: 0;
@@ -36,21 +36,21 @@
             background-color: rgb(25, 47, 44);
             border-radius: 50%;
             transform-origin: 50px 50px; /* Center point of the circle */
-            animation: spin 1s linear infinite;
+            animation: spin 1.2s linear infinite;
         }
 
-        .circle div:nth-child(1) { transform: rotate(0deg) translate(50px); }
-        .circle div:nth-child(2) { transform: rotate(45deg) translate(50px); }
-        .circle div:nth-child(3) { transform: rotate(90deg) translate(50px); }
-        .circle div:nth-child(4) { transform: rotate(135deg) translate(50px); }
-        .circle div:nth-child(5) { transform: rotate(180deg) translate(50px); }
-        .circle div:nth-child(6) { transform: rotate(225deg) translate(50px); }
-        .circle div:nth-child(7) { transform: rotate(270deg) translate(50px); }
-        .circle div:nth-child(8) { transform: rotate(315deg) translate(50px); }
+        .circle div:nth-child(1) { transform: rotate(0deg) translate(40px); }
+        .circle div:nth-child(2) { transform: rotate(45deg) translate(40px); }
+        .circle div:nth-child(3) { transform: rotate(90deg) translate(40px); }
+        .circle div:nth-child(4) { transform: rotate(135deg) translate(40px); }
+        .circle div:nth-child(5) { transform: rotate(180deg) translate(40px); }
+        .circle div:nth-child(6) { transform: rotate(225deg) translate(40px); }
+        .circle div:nth-child(7) { transform: rotate(270deg) translate(40px); }
+        .circle div:nth-child(8) { transform: rotate(315deg) translate(40px); }
 
         @keyframes spin {
-            0% { transform: rotate(0deg) translate(50px); }
-            100% { transform: rotate(360deg) translate(50px); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .logo {
