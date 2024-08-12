@@ -1,17 +1,63 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Animation WebM</title>
+    <title>Karta med Objektinmatning</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        #info {
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
 </head>
-<body style="margin: 0; padding: 0; height: 100%; display: flex; justify-content: center; align-items: center; background-color: black;">
+<body>
+    <h1>Karta med Objektinmatning</h1>
+    <div id="map"></div>
+    <div id="info">
+        <h3>Objektlista</h3>
+        <ul id="objectList"></ul>
+        <form action="https://formspree.io/f/xrbzkraj" method="POST">
+            <input type="hidden" name="data" id="formData">
+            <button type="submit">Skicka till e-post</button>
+        </form>
+    </div>
 
-<video width="400" height="300" autoplay loop muted>
-    <source src="loading_animation.webm" type="video/webm">
-    Your browser does not support the video tag.
-</video>
+    <script>
+        var map = L.map('map').setView([62.0, 15.0], 5); // Centrera över Sverige
 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var data = [];
+
+        map.on('click', function(e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+
+            var object = prompt("Skriv in objektets namn:");
+            var url = prompt("Skriv in hemsidans URL:");
+
+            if(object && url) {
+                var marker = L.marker([lat, lng]).addTo(map);
+
+                var objectList = document.getElementById("objectList");
+                var li = document.createElement("li");
+                li.innerHTML = object + " - " + lat + ", " + lng + " - <a href='" + url + "' target='_blank'>" + url + "</a>";
+                objectList.appendChild(li);
+
+                marker.bindPopup("<b>" + object + "</b><br>" + lat + ", " + lng + "<br><a href='" + url + "' target='_blank'>" + url + "</a>").openPopup();
+
+                data.push({object: object, lat: lat, lng: lng, url: url});
+                document.getElementById("formData").value = JSON.stringify(data);
+            }
+        });
+    </script>
 </body>
 </html>
