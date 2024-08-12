@@ -109,18 +109,23 @@
     <!-- Inmatningsformulär -->
     <div id="inputForm">
         <h3>Lägg till Jaktskyttebana</h3>
-        <input type="text" id="nameInput" placeholder="Namn på Jaktskyttebana">
-        <input type="url" id="urlInput" placeholder="Jaktskyttebanans hemsida">
-        <textarea id="infoInput" rows="3" placeholder="Övrig information"></textarea>
-        <button id="submitBtn">Skicka</button>
-        <button id="cancelBtn">Avbryt</button>
+        <form id="suggestionForm" action="https://formspree.io/f/xrbzkraj" method="POST">
+            <input type="text" name="name" id="nameInput" placeholder="Namn på Jaktskyttebana" required>
+            <input type="url" name="url" id="urlInput" placeholder="Jaktskyttebanans hemsida" required>
+            <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
+            <input type="hidden" name="latitude" id="latitudeInput">
+            <input type="hidden" name="longitude" id="longitudeInput">
+            <button type="submit" id="submitBtn">Skicka</button>
+            <button type="button" id="cancelBtn">Avbryt</button>
+        </form>
     </div>
 
     <!-- Tackmeddelande -->
     <div id="thankYouMessage">
         <h3>Tack!</h3>
         <p>Tack för att du vill förbättra <a href="https://www.jaktkartan.se" target="_blank">Jaktkartan.se</a></p>
-        <button onclick="closeThankYouMessage()">Stäng</button>
+        <button onclick="addNewSuggestion()">Lägg till nytt förslag</button>
+        <button onclick="goToJaktkartan()">Till Jaktkartan.se</button>
     </div>
 
     <!-- Startruta -->
@@ -141,16 +146,19 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        var data = [];
         var currentLat, currentLng;
 
         map.on('click', function(e) {
             currentLat = e.latlng.lat;
             currentLng = e.latlng.lng;
+            document.getElementById('latitudeInput').value = currentLat;
+            document.getElementById('longitudeInput').value = currentLng;
             openInputForm();
         });
 
-        document.getElementById('submitBtn').onclick = function() {
+        document.getElementById('suggestionForm').onsubmit = function(event) {
+            event.preventDefault(); // Hindra standardformulärinlämning
+
             var name = document.getElementById('nameInput').value;
             var url = document.getElementById('urlInput').value;
             var info = document.getElementById('infoInput').value;
@@ -165,10 +173,17 @@
 
                 marker.bindPopup("<b>" + name + "</b><br>" + currentLat + ", " + currentLng + "<br><a href='" + url + "' target='_blank'>" + url + "</a><br>" + info).openPopup();
 
-                data.push({name: name, lat: currentLat, lng: currentLng, url: url, info: info});
-
-                closeInputForm();
-                showThankYouMessage();
+                // Skicka formuläret med AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", document.getElementById('suggestionForm').action, true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        closeInputForm();
+                        showThankYouMessage();
+                    }
+                };
+                xhr.send(new FormData(document.getElementById('suggestionForm')));
             }
         };
 
@@ -193,6 +208,14 @@
 
         function closeThankYouMessage() {
             document.getElementById('thankYouMessage').style.display = 'none';
+        }
+
+        function addNewSuggestion() {
+            closeThankYouMessage();
+        }
+
+        function goToJaktkartan() {
+            window.location.href = 'https://www.jaktkartan.se';
         }
 
         function closeStartMessage() {
