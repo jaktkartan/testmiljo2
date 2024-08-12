@@ -17,15 +17,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 1; /* Lägger kartan bakom andra element */
-        }
-        #logo {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 100px;
-            z-index: 1000; /* Loggan överlagrar kartan */
-            pointer-events: none; /* Loggan påverkar inte interaktionen med kartan */
+            z-index: 1;
         }
         #infoPanel {
             position: absolute;
@@ -36,10 +28,9 @@
             border: 1px solid #ccc;
             border-radius: 10px;
             padding: 10px;
-            z-index: 1000; /* Panelen överlagrar kartan */
+            z-index: 1000;
             max-height: calc(100% - 20px);
             overflow-y: auto;
-            pointer-events: auto; /* Panelen är interaktiv */
         }
         #infoPanel h3 {
             margin-top: 0;
@@ -97,13 +88,16 @@
         #startMessage {
             background-color: rgba(255, 255, 255, 0.9);
         }
+        #startMessage img {
+            width: 100px;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <body>
-    <img id="logo" src="Laddning_logga.png" alt="Jaktkartan.se Logga">
-
     <div id="map"></div>
 
     <!-- Informationspanel -->
@@ -131,6 +125,7 @@
 
     <!-- Startruta -->
     <div id="startMessage">
+        <img src="Laddning_logga.png" alt="Jaktkartan.se Logga">
         <h3>Välkommen till Jaktkartan.se!</h3>
         <p>Klicka på kartan för att lägga till en jaktskyttebana. Fyll i detaljerna i formuläret som visas, och tryck på "Skicka" för att skicka in din information.</p>
         <button onclick="closeStartMessage()">Fortsätt</button>
@@ -138,9 +133,9 @@
 
     <script>
         var map = L.map('map', {
-            scrollWheelZoom: true, // Återaktivera skrollning
-            zoomControl: true // Visar zoomkontroller
-        }).setView([62.0, 15.0], 5); // Centrera över Sverige
+            scrollWheelZoom: true,
+            zoomControl: true
+        }).setView([62.0, 15.0], 5);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
