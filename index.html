@@ -3,20 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Karta med Objektinmatning</title>
+    <title>Jaktkartan - Lägg till Jaktskyttebana</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        body, html {
+            height: 100%;
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
         }
         #map {
-            height: 80vh;
+            height: 100%;
             width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
-        #info {
+        #logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 100px;
+            z-index: 1000;
+        }
+        #infoPanel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
             padding: 10px;
-            text-align: center;
+            z-index: 1000;
+            max-height: calc(100% - 20px);
+            overflow-y: auto;
+        }
+        #infoPanel h3 {
+            margin-top: 0;
         }
         #objectList {
             list-style-type: none;
@@ -25,7 +48,7 @@
         #objectList li {
             margin: 5px 0;
         }
-        #inputForm, #thankYouMessage {
+        #inputForm, #thankYouMessage, #startMessage {
             display: none;
             position: fixed;
             top: 50%;
@@ -38,7 +61,7 @@
             width: 300px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
         }
-        #inputForm h3, #thankYouMessage h3 {
+        #inputForm h3, #thankYouMessage h3, #startMessage h3 {
             margin-top: 0;
         }
         #inputForm input, #inputForm textarea {
@@ -48,7 +71,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        #inputForm button, #thankYouMessage button {
+        #inputForm button, #thankYouMessage button, #startMessage button {
             margin-top: 10px;
             padding: 10px;
             width: 100%;
@@ -68,10 +91,8 @@
             color: #007BFF;
             text-decoration: none;
         }
-        #logo {
-            width: 150px;
-            margin: 10px auto;
-            display: block;
+        #startMessage {
+            background-color: rgba(255, 255, 255, 0.9);
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
@@ -79,9 +100,12 @@
 </head>
 <body>
     <img id="logo" src="Laddning_logga.png" alt="Jaktkartan.se Logga">
+
     <div id="map"></div>
-    <div id="info">
-        <h3>Objektlista</h3>
+
+    <!-- Informationspanel -->
+    <div id="infoPanel">
+        <h3>Jaktskyttebanor</h3>
         <ul id="objectList"></ul>
     </div>
 
@@ -102,8 +126,18 @@
         <button onclick="closeThankYouMessage()">Stäng</button>
     </div>
 
+    <!-- Startruta -->
+    <div id="startMessage">
+        <h3>Välkommen till Jaktkartan.se!</h3>
+        <p>Klicka på kartan för att lägga till en jaktskyttebana. Fyll i detaljerna i formuläret som visas, och tryck på "Skicka" för att skicka in din information.</p>
+        <button onclick="closeStartMessage()">Fortsätt</button>
+    </div>
+
     <script>
-        var map = L.map('map').setView([62.0, 15.0], 5); // Centrera över Sverige
+        var map = L.map('map', {
+            scrollWheelZoom: false, // Inaktiverar skrollning
+            zoomControl: true // Visar zoomkontroller
+        }).setView([62.0, 15.0], 5); // Centrera över Sverige
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -134,7 +168,6 @@
                 marker.bindPopup("<b>" + name + "</b><br>" + currentLat + ", " + currentLng + "<br><a href='" + url + "' target='_blank'>" + url + "</a><br>" + info).openPopup();
 
                 data.push({name: name, lat: currentLat, lng: currentLng, url: url, info: info});
-                document.getElementById("formData").value = JSON.stringify(data);
 
                 closeInputForm();
                 showThankYouMessage();
@@ -163,6 +196,14 @@
         function closeThankYouMessage() {
             document.getElementById('thankYouMessage').style.display = 'none';
         }
+
+        function closeStartMessage() {
+            document.getElementById('startMessage').style.display = 'none';
+        }
+
+        window.onload = function() {
+            document.getElementById('startMessage').style.display = 'block';
+        };
     </script>
 </body>
 </html>
