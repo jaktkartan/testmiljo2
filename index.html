@@ -131,7 +131,7 @@
     <!-- Startruta -->
     <div id="startMessage">
         <img src="Laddning_logga.png" alt="Jaktkartan.se Logga">
-        <h3>Välkommen till Jaktkartan.se!</h3>
+        <h3>Välkommen till Jaktkartans tjänst!</h3>
         <p>Klicka på kartan för att lägga till en jaktskyttebana. Fyll i detaljerna i formuläret som visas, och tryck på "Skicka" för att skicka in din information.</p>
         <button onclick="closeStartMessage()">Fortsätt</button>
     </div>
@@ -219,7 +219,7 @@
 
         function addNewSuggestion() {
             closeThankYouMessage();
-            openInputForm();
+            // Vänta på att användaren ska klicka på kartan igen för att lägga till en ny punkt
         }
 
         function goToJaktkartan() {
