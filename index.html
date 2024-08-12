@@ -5,27 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karta med Objektinmatning</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
         #map {
-            height: 500px;
+            height: 80vh;
             width: 100%;
         }
         #info {
-            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+        }
+        #objectList {
+            list-style-type: none;
+            padding: 0;
+        }
+        #objectList li {
+            margin: 5px 0;
+        }
+        #inputForm, #thankYouMessage {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 2px solid #444;
+            padding: 20px;
+            z-index: 1000;
+            width: 300px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+        #inputForm h3, #thankYouMessage h3 {
+            margin-top: 0;
+        }
+        #inputForm input, #inputForm textarea {
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #inputForm button, #thankYouMessage button {
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #submitBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #cancelBtn {
+            background-color: #f44336;
+            color: white;
+        }
+        #thankYouMessage a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        #logo {
+            width: 150px;
+            margin: 10px auto;
+            display: block;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <body>
-    <h1>Karta med Objektinmatning</h1>
+    <img id="logo" src="Laddning_logga.png" alt="Jaktkartan.se Logga">
     <div id="map"></div>
     <div id="info">
         <h3>Objektlista</h3>
         <ul id="objectList"></ul>
-        <form action="https://formspree.io/f/xrbzkraj" method="POST">
-            <input type="hidden" name="data" id="formData">
-            <button type="submit">Skicka till e-post</button>
-        </form>
+    </div>
+
+    <!-- Inmatningsformulär -->
+    <div id="inputForm">
+        <h3>Lägg till Jaktskyttebana</h3>
+        <input type="text" id="nameInput" placeholder="Namn på Jaktskyttebana">
+        <input type="url" id="urlInput" placeholder="Jaktskyttebanans hemsida">
+        <textarea id="infoInput" rows="3" placeholder="Övrig information"></textarea>
+        <button id="submitBtn">Skicka</button>
+        <button id="cancelBtn">Avbryt</button>
+    </div>
+
+    <!-- Tackmeddelande -->
+    <div id="thankYouMessage">
+        <h3>Tack!</h3>
+        <p>Tack för att du vill förbättra <a href="https://www.jaktkartan.se" target="_blank">Jaktkartan.se</a></p>
+        <button onclick="closeThankYouMessage()">Stäng</button>
     </div>
 
     <script>
@@ -36,28 +110,59 @@
         }).addTo(map);
 
         var data = [];
+        var currentLat, currentLng;
 
         map.on('click', function(e) {
-            var lat = e.latlng.lat;
-            var lng = e.latlng.lng;
+            currentLat = e.latlng.lat;
+            currentLng = e.latlng.lng;
+            openInputForm();
+        });
 
-            var object = prompt("Skriv in objektets namn:");
-            var url = prompt("Skriv in hemsidans URL:");
+        document.getElementById('submitBtn').onclick = function() {
+            var name = document.getElementById('nameInput').value;
+            var url = document.getElementById('urlInput').value;
+            var info = document.getElementById('infoInput').value;
 
-            if(object && url) {
-                var marker = L.marker([lat, lng]).addTo(map);
+            if (name && url) {
+                var marker = L.marker([currentLat, currentLng]).addTo(map);
 
                 var objectList = document.getElementById("objectList");
                 var li = document.createElement("li");
-                li.innerHTML = object + " - " + lat + ", " + lng + " - <a href='" + url + "' target='_blank'>" + url + "</a>";
+                li.innerHTML = name + " - " + currentLat + ", " + currentLng + " - <a href='" + url + "' target='_blank'>" + url + "</a>";
                 objectList.appendChild(li);
 
-                marker.bindPopup("<b>" + object + "</b><br>" + lat + ", " + lng + "<br><a href='" + url + "' target='_blank'>" + url + "</a>").openPopup();
+                marker.bindPopup("<b>" + name + "</b><br>" + currentLat + ", " + currentLng + "<br><a href='" + url + "' target='_blank'>" + url + "</a><br>" + info).openPopup();
 
-                data.push({object: object, lat: lat, lng: lng, url: url});
+                data.push({name: name, lat: currentLat, lng: currentLng, url: url, info: info});
                 document.getElementById("formData").value = JSON.stringify(data);
+
+                closeInputForm();
+                showThankYouMessage();
             }
-        });
+        };
+
+        document.getElementById('cancelBtn').onclick = function() {
+            closeInputForm();
+        };
+
+        function openInputForm() {
+            document.getElementById('inputForm').style.display = 'block';
+        }
+
+        function closeInputForm() {
+            document.getElementById('inputForm').style.display = 'none';
+            document.getElementById('nameInput').value = '';
+            document.getElementById('urlInput').value = '';
+            document.getElementById('infoInput').value = '';
+        }
+
+        function showThankYouMessage() {
+            document.getElementById('thankYouMessage').style.display = 'block';
+        }
+
+        function closeThankYouMessage() {
+            document.getElementById('thankYouMessage').style.display = 'none';
+        }
     </script>
 </body>
 </html>
