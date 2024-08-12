@@ -111,7 +111,7 @@
         <h3>Lägg till Jaktskyttebana</h3>
         <form id="suggestionForm" action="https://formspree.io/f/xrbzkraj" method="POST">
             <input type="text" name="name" id="nameInput" placeholder="Namn på Jaktskyttebana" required>
-            <input type="url" name="url" id="urlInput" placeholder="Jaktskyttebanans hemsida" required>
+            <input type="url" name="url" id="urlInput" placeholder="Jaktskyttebanans hemsida">
             <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
             <input type="hidden" name="latitude" id="latitudeInput">
             <input type="hidden" name="longitude" id="longitudeInput">
@@ -160,10 +160,10 @@
             event.preventDefault(); // Hindra standardformulärinlämning
 
             var name = document.getElementById('nameInput').value;
-            var url = document.getElementById('urlInput').value;
+            var url = document.getElementById('urlInput').value || "Ingen URL angiven";
             var info = document.getElementById('infoInput').value;
 
-            if (name && url) {
+            if (name) {
                 var marker = L.marker([currentLat, currentLng]).addTo(map);
 
                 var objectList = document.getElementById("objectList");
@@ -173,7 +173,8 @@
 
                 marker.bindPopup("<b>" + name + "</b><br>" + currentLat + ", " + currentLng + "<br><a href='" + url + "' target='_blank'>" + url + "</a><br>" + info).openPopup();
 
-                // Skicka formuläret med AJAX
+                // Skicka formuläret som URL-kodad data
+                var formData = new URLSearchParams(new FormData(document.getElementById('suggestionForm'))).toString();
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", document.getElementById('suggestionForm').action, true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -183,7 +184,7 @@
                         showThankYouMessage();
                     }
                 };
-                xhr.send(new FormData(document.getElementById('suggestionForm')));
+                xhr.send(formData);
             }
         };
 
